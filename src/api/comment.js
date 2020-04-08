@@ -1,16 +1,16 @@
 import R from './request.js';
 
 export default {
-    create: function() {
+    create: function(comment) {
 
     },
-    delete: function() {
+    delete: function(comment_id) {
 
     },
-    update: function() {
+    update: function(comment) {
 
     },
-    getCommentsByPost: function() {
+    getCommentsByPost: function(post_id) {
 
     }
 }
