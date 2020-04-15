@@ -14,7 +14,7 @@
 </template>
 <script>
 import marked from 'marked';
-import F from '../../util/frequency.js';
+import F from '@/util/frequency.js';
 marked.setOptions({
     renderer: new marked.Renderer(),
     gfm: true,

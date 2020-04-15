@@ -21,6 +21,11 @@ const routes = [
   {
     path: '/auth',
     component: () => import('../container/Auth')
+  },
+  {
+    path: '/post/:id',
+    component: () => import('../container/PostPage'),
+    props: true
   }
 ]
 

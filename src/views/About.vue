@@ -18,7 +18,6 @@ export default {
   methods: {
     test(post) {
       console.log(post);
-      
     }
   },
   mounted() {
