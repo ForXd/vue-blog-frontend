@@ -1,24 +1,25 @@
 <template>
   <div class="about">
     <h1>This is an about page</h1>
-    <comment-list :comments="comments"></comment-list>
+    <!-- <back-ground></back-ground> -->
+    <post-editor :submitPost="test"/>
   </div>
 </template>
 <script>
-// 
-import comments from './test.js';
-import CommentList from '@/components/comment/CommentList.vue';
+import PostEditor from '@/components/post/PostEditor.vue';
 export default {
   components: {
-    CommentList
+    PostEditor
   },
   data() {
     return {
-      comments: comments
     }
   },
   methods: {
-
+    test(post) {
+      console.log(post);
+      
+    }
   },
   mounted() {
     // console.log(this.comments)

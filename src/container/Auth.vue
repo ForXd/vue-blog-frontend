@@ -3,13 +3,13 @@
         <div class="container">
             <img src="../assets/logo.png" alt="">
             <div class="label-input">
-                name: <input type="text" v-model="username">
+                <input type="text" placeholder="name" v-model="username">
             </div>
             <div class="label-input">
-                password:<input type="password" v-model="password">
+                <input type="password" placeholder="password" v-model="password">
             </div>
             <div v-if="!isLogin" class="label-input">
-                passwordConfirm:<input type="password" v-model="passwordConfirm">
+                <input type="password" placeholder="passwordConfirm" v-model="passwordConfirm">
             </div>
             <div>
                 <a href="javascript:" @click="changeTab">
@@ -77,7 +77,7 @@ export default {
         text-decoration-line: none;
     }
     .wrapper {
-        background: #eee;
+        background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
         height: 80vh;
         display: flex;
         align-items: center;
@@ -86,7 +86,7 @@ export default {
     .container {
         padding: 3em;
         border-radius: 1em;
-        box-shadow: 3px 3px 1.5px 1.5px;
+        box-shadow: 3px 3px 10px 0;
         text-align: left;
         max-width: 500px;
         background: white;
@@ -98,15 +98,16 @@ export default {
         margin: 1em 0;
         input {
             outline: none;
-            border-radius: 0;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
             border: 0;
             border-bottom: 1px solid;
             padding: 3px 5px;
         }
     }
     button {
-        background: transparent;
-        border: 1px solid #ccc;
+        background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+        border:0;
         border-radius: 0.3em;
         padding: 0.5em;
         outline: 0;

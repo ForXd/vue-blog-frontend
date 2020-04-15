@@ -10,27 +10,30 @@
                 <div class="reply">
                     <button>赞</button>
                     <button>踩</button>
-                    <button @click="handleReply">回复</button>
+                    <button @click="handleReply">{{editComment ? '取消' : '回复'}}</button>
                     <span v-if="hasChildren" @click="toggle" :class="isOpen ? 'up' : 'down'"></span>
                 </div>
             </div>
         </div>
         <div class="editor" v-show="editComment">
             <textarea 
-            rows="1" 
-            @input="handleChange" 
-            v-model="replyContent">
+                rows="1" 
+                @input="handleChange" 
+                v-model="replyContent"
+                @blur="() => {if (replyContent == '') focus = false}"
+                @focus="() => {if (replyContent == '') focus = true}"
+            > 
             </textarea>
-            <button @click="addComment">回复</button>
+            <button @click="addComment" :class="focus ? '' : 'hidden'">回复</button>
         </div>
         
         <!-- 递归组件需要终止渲染条件，hasChildren -->
         <div class="children" v-if="hasChildren" v-show="isOpen">
             <comment-item v-for="item in comment.children" 
-                          :key="item.id"
-                          :comment="item"
-                          :addChildren="addChildren"
-                          :addItem="addItem"/>
+                :key="item.id"
+                :comment="item"
+                :addChildren="addChildren"
+                :addItem="addItem"/>
         </div>
     </div>
 </template>
@@ -46,14 +49,22 @@ export default {
         return {
             isOpen: false,
             replyContent: '',
+            focus: false,
             editComment: false,
             placeholder: `reply to ${this.comment.author}: `
         }
     },
+    // directives: {
+    //     focus: {
+    //         update: function(el) {
+    //             el.focus();
+    //         }
+    //     }
+    // },
     computed: {
         hasChildren() {
             return this.comment.children && this.comment.children.length;
-        }
+        },
     },
     methods: {
         toggle() {
@@ -72,6 +83,7 @@ export default {
         },
         handleReply() {
             this.editComment = !this.editComment;
+            this.focus = true;
         },
         handleChange(e) {
             let elem = e.target;
@@ -83,6 +95,9 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+    .hidden {
+        display: none;
+    }
     button {
         background: #fff;
         outline: none;

@@ -29,16 +29,17 @@ export default {
     props: {
         width:String,
         height:String,
+        getContent: Function,
     },
     data() {
         return {
             rawContent: '',
             indent: 2,
             editStyle: {
-                'flex-basis': '45%'
+                'flex-basis': '47.5%'
             },
             previewStyle: {
-                'flex-basis': '45%'
+                'flex-basis': '47.5%'
             }
         }
     },
@@ -73,15 +74,16 @@ export default {
             }
         },
         tongleMode() {
-            this.previewStyle['flex-basis'] = `${this.previewStyle['flex-basis'] == '90%' ? '0' : '90%'}`;
-            this.editStyle['flex-basis'] = `${this.editStyle['flex-basis'] == '0' ? '90%' : '0'}`;
+            this.previewStyle['flex-basis'] = `${this.previewStyle['flex-basis'] == '95%' ? '0' : '95%'}`;
+            this.editStyle['flex-basis'] = `${this.editStyle['flex-basis'] == '0' ? '95%' : '0'}`;
         },
         splitMode() {
-            this.previewStyle['flex-basis'] = '45%';
-            this.editStyle['flex-basis'] = '45%';
+            this.previewStyle['flex-basis'] = '47.5%';
+            this.editStyle['flex-basis'] = '47.5%';
         },
         update: F.debounce(function(e) {
             this.rawContent = e.target.value;
+            this.getContent(this.rawContent);
         }, 300),
     },
 }
@@ -110,7 +112,7 @@ export default {
         background: #eee;
         outline: none;
         overflow-x: hidden;
-        overflow-y: auto;
+        overflow-y: scroll;
         border: none;
         resize:none;
     }
