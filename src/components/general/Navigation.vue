@@ -15,32 +15,33 @@
     </div>    
 </template>
 <script>
-import F from '@/util/frequency.js';
 export default {
     data() {
         return {
-            show: true,
             prev: 0,
         }
     },
     computed: {
+        show() {
+            return this.$store.state.navFlag;
+        },
         classObj() {
             return this.show ? '' : 'hidden';
         },
         user() {
             return this.$store.state.user;
-        }
+        },
     },
     methods: {
-        fn: F.throttle(function() {
+        fn() {
             let cur = document.documentElement.scrollTop;
-            if (cur - this.prev > 30) {
-                this.show = false;
-            } else if (cur - this.prev < -30) {
-                this.show = true;
+            if (cur - this.prev > 40) {
+                this.$store.commit('hiddenNav');
+            } else if (cur - this.prev < -10) {
+                this.$store.commit('showNav');
             }
             this.prev = cur;
-        }, 300),
+        },
         logout() {
             this.$store.commit('logout');
         }

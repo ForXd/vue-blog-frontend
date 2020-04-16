@@ -4,7 +4,8 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
-    user: null
+    user: null,
+    navFlag: true
   },
   mutations: {
     login(state, user) {
@@ -14,6 +15,12 @@ export default new Vuex.Store({
     logout(state) {
       state.user = null;
       localStorage.removeItem('cur_user');
+    },
+    showNav(state) {
+      state.navFlag = true;
+    },
+    hiddenNav(state) {
+      state.navFlag = false;
     }
   },
   actions: {
