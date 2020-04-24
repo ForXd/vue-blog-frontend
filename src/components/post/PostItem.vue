@@ -1,6 +1,5 @@
 <template>
-    <div class="container">
-        <img :src="post.imgUrl">
+    <div class="container" @click="showPost">
         <div class="title">
             {{post.title}}
         </div>
@@ -8,7 +7,7 @@
             {{post.description}}
         </div>
         <div class="time">
-            {{post.createTime}}
+            {{post.create_time}}
         </div>
     </div>
 </template>
@@ -18,16 +17,19 @@ export default {
         post: Object
     },
     methods: {
-        praise() {
-
-        },
-    },
-    mounted() {
+        showPost() {
+            this.$router.push('/post/' + this.post.id);
+        }
     },
 }
 </script>
-<style scoped>
+<style lang="less" scoped>
 .container {
+    &:hover {
+        transform: scale(1.1);
+        transition: all 0.6s ease;
+        cursor: pointer;
+    }
     width: 80%;
     border: 1px solid #ccc;
     margin: 1em auto;

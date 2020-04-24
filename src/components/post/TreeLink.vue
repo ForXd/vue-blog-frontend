@@ -1,10 +1,10 @@
 <template>
-    <div>
+    <div id="container">
         <div :class="focusId == link.id ? 'cur-link' : 'other-link'"
-            @click="jump">
+            @click="jump" ref="cur">
             {{link.title}}
         </div>
-        <div class="children" v-if="hasChildren" v-show="focusChildren">
+        <div class="children" v-if="hasChildren" v-show="focusChildren || focusId == link.id">
             <tree-link v-for="item in link.children"
             :link="item"
             :key="item.id"
@@ -21,10 +21,19 @@ export default {
         focusId: Number,
         focusTo: Function
     },
+    watch: {
+        focusId(val) {
+            if (val == this.link.id) {
+                this.focusTo(val, this.$refs.cur.offsetTop);
+            }
+        }
+    },
     methods: {
         jump() {
-            this.focusTo(this.link.id);
+            this.focusTo(this.link.id, this.$refs.cur.offsetTop);
             let obj = document.getElementById(this.link.id);
+            // 为什么另一个post不行？
+            console.log(obj);
             obj.scrollIntoView();
         }
     },
@@ -55,16 +64,21 @@ export default {
 
 <style scoped>
 .cur-link {
-    background: white;
+    background: #ccc;
+    color: black;
+    width: 500px;
     text-overflow:ellipsis; 
-    /* white-space: nowrap; */
+    white-space: nowrap;
     overflow: hidden;
 }
 .other-link {
-    background: gray;
+    background: white;
 }
 .children {
     padding-left: 1em;
+}
+#container {
+    display: block;
 }
 </style>
 

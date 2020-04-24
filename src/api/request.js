@@ -3,6 +3,9 @@ export default {
     get(url) {
         return fetch(PREFIX + url).then(res => res.json());
     },
+    getFile(url) {
+        return fetch(PREFIX + url);
+    },
     post(url, data) {
         return fetch(PREFIX + url, {
             method: 'POST', // or 'PUT'

@@ -1,5 +1,9 @@
 <template>
     <div class="container">
+        <div class="first">
+            <textarea v-model="content" cols="30" rows="10"></textarea>
+            <button @click="() => this.addComment(this.content)">reply</button>
+        </div>
         <comment-item v-for="comment in comments" 
         :comment="comment" 
         :key="comment.id"
@@ -20,7 +24,8 @@ export default {
     },
     data() {
         return {
-            index: 8,
+            index: this.comments.length + 1,
+            content: '',
         }
     },
     methods: {
@@ -37,7 +42,23 @@ export default {
                 author: this.$store.user
             })
             // need post to server
+        },
+        addComment(content) {
+            let comment = {};
+            comment.content = content;
+            comment.author = this.$store.user;
+            comment.parentId = 0;
+            comment.id = this.index;
+            this.index++;
+            this.comments.push(comment);
+            this.content = '';
         }
     },
 }
 </script>
+<style scoped>
+.first {
+
+}
+</style>
+

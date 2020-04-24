@@ -1,12 +1,17 @@
 <template>
    <div class="container">
       <div class="toc" :style="tocStyle">
-         <tree-link 
-         v-for="item in links" 
-         :link="item" 
-         :key="item.id" 
-         :focusId="active"
-         :focusTo="focusTo"/>
+         <div class="left-bar">
+            <div class="cur-active" :style="activeStyle"></div>
+         </div>
+         <div class="right-content" :style="contentStyle">
+            <tree-link 
+            v-for="item in links" 
+            :link="item" 
+            :key="item.id" 
+            :focusId="active"
+            :focusTo="focusTo"/>
+         </div>
       </div>
       <div class="content" v-html="compiledContent">
       </div>
@@ -32,20 +37,28 @@ marked.setOptions({
 });
 export default {
    props: {
-      rawContent: String
+      rawContent: String,
+      tocHeight: Number
    },
    components: {
       TreeLink
    },
    data() {
       return {
-         test: '# h1 \n## h11\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n### h1jofsjdasodfjoasdjfioasjdfiaodjffgiosjfoigjsdoifj11\n## h12\n# h2\n---\n## hh\n### ji\n# ji\n### hhhh\n# jfis\n# jisdf\n## jsfid\n# asdios',
          active: 1,
+         activeOffset: 0,
+         contentOffset: 0
       }
    }, 
    methods: {
-      focusTo(id) {
+      focusTo(id, offsetTop) {
          this.active = id;
+         this.activeOffset = offsetTop;
+         if (this.activeOffset > this.tocHeight/2) {
+            this.contentOffset = this.tocHeight/2 - 20;
+         } else {
+            this.contentOffset = 0;
+         }
       },
       handleScroll() {
          let anchors = document.querySelectorAll('.anchor');
@@ -61,20 +74,30 @@ export default {
          return this.$store.state.navFlag;
       },
       compiledContent() {
-         return marked(this.test);
+         return marked(this.rawContent);
       },
       tocStyle() {
+         let style = {};
          if (this.navShow) {
-            return {top: '60px;'};
-         } else {
-            return {};
+            style.top = '60px';
          }
+         style.height = this.tocHeight + 'px';
+         return style;
+      },
+      contentStyle() {
+         let style = {};
+         style.transform = `translateY(${-this.contentOffset}px)`;
+         return style;
+      },
+      activeStyle() {
+         return { transform: `translateY(${this.activeOffset - this.contentOffset}px)`};
       },
       links() {
          let regex = /^#+ (.+)/mg;
-         let result = this.test.match(regex);
+         let result = this.rawContent.match(regex);
          let regex1 = /^(#+) (.+)/
          let links = [];
+         if (!result) return [];
          for (let i = 0; i < result.length; ++i) {
             let temp = result[i].match(regex1);
             let item = {};
@@ -118,13 +141,34 @@ export default {
       text-align: left;
       position: sticky;
       top: 0;
+      transition: all 0.6s ease;
       align-self: flex-start;
       border: 1px solid #ccc;
-      padding: 1em;
-      text-overflow:ellipsis; 
+      padding: 0 1em;
       width: 10em;
       overflow: hidden;
       white-space: nowrap;
+      display: flex;
+   }
+   .left-bar {
+      border-right: 2px solid #ccc;
+      margin: 0 10px;
+      position: relative;
+   }
+   .cur-active {
+      background: #000;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      left: -4px;
+      transition: all 0.6s ease;
+   }
+   .right-content {
+      text-overflow:ellipsis;
+      width: 100%;
+      transition: all 0.6s ease;
    }
    .content {
       white-space: pre-line;

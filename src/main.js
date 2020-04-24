@@ -14,6 +14,19 @@ Vue.directive('highlight',function (el) {
     hljs.highlightBlock(block)
   })
 })
+Vue.directive('dom', {
+  bind: function (el, binding) {
+    var obj = binding.value;
+    if (obj != null) {
+      var key = Object.keys(binding.modifiers)[0] || "el";
+      Vue.set(obj, key, el);
+    }
+  },
+  inserted: function () {},
+  update: function () {},
+  componentUpdated: function () {},
+  unbind: function () {}
+})
 
 new Vue({
   router,
