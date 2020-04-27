@@ -20,11 +20,11 @@ export default {
         CommentItem
     },
     props: {
-        comments: Array
+        comments: Array,
+        createComment: Function
     },
     data() {
         return {
-            index: this.comments.length + 1,
             content: '',
         }
     },
@@ -35,12 +35,19 @@ export default {
         },
         addItem(item, content) {
             console.log(item, content);
-            item.children.push({
-                id: this.index++,
-                content,
-                to_comment: item.id,
-                author: this.$store.user
+            let comment = {};
+            comment.content = content;
+            comment.to_comment = item.id;
+            this.createComment(comment).then(res => {
+                console.log(res);
+                item.children.push(res);
             })
+            // item.children.push({
+            //     id: this.index++,
+            //     content,
+            //     to_comment: item.id,
+            //     author: this.$store.user
+            // })
             // need post to server
         },
         addComment(content) {
@@ -48,10 +55,11 @@ export default {
             comment.content = content;
             comment.author = this.$store.user;
             comment.parentId = 0;
-            comment.id = this.index;
-            this.index++;
-            this.comments.push(comment);
-            this.content = '';
+            this.createComment(comment).then(res => {
+                console.log(res);
+                this.comments.push(res);
+                this.content = '';
+            })
         }
     },
 }

@@ -15,6 +15,7 @@ export default {
         items: Array
     },
     mounted() {
+        console.log(this.items);
     },
 }
 </script>

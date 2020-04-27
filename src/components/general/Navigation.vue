@@ -66,6 +66,7 @@ export default {
         background: white;
         transition: all 0.6s ease;
         border-bottom: 1px solid #ccc;
+        z-index: 10;
         a {
             display: inline-block;
             font-weight: bold;

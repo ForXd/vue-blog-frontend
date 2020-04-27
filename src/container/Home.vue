@@ -3,14 +3,20 @@
         <div class="post-list">
             <post-list :items="posts"/>
         </div>
+        <pagination 
+        :onChange="getPage" 
+        :total="100" 
+        :count="page_count"/>
     </div>
 </template>
 <script>
-import P from '@/api/post.js';
+import { getPostList } from '@/api/post.js';
+import Pagination from '@/components/general/Pagination.vue';
 import PostList from '@/components/post/PostList.vue';
 export default {
     components: {
-        PostList
+        PostList,
+        Pagination
     },
     data() {
         return {
@@ -18,17 +24,23 @@ export default {
             post_page_num:1,
             post_count: 0,
             page_count: 10,
-
             categories: [],
         }
     },
     methods: {
+        getPage(page_num) {
+            getPostList(page_num)
+            .then(res => {
+                console.log(res);
+                let post = res.post;
+                this.post_count = res.postCount;
+                this.posts.splice(0, this.page_count, ...post);
+                this.post_page_num = page_num;
+            });
+        },
     },
-    mounted() {
-        P.getPostList(this.post_page_num)
-        .then(res => {
-            this.posts.splice(0, 0, ...res);
-        })
+    created() {
+        this.getPage(this.post_page_num);
     },
 }
 </script>

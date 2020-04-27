@@ -30,11 +30,9 @@ export default {
     },
     methods: {
         jump() {
-            this.focusTo(this.link.id, this.$refs.cur.offsetTop);
-            let obj = document.getElementById(this.link.id);
-            // 为什么另一个post不行？
-            console.log(obj);
-            obj.scrollIntoView();
+            // this.focusId = this.link.id;
+            // this.focusTo(this.link.id, this.$refs.cur.offsetTop);
+            // 在此处跳转，因为Post组件尚未完成更新，所以会出现null
         }
     },
     computed: {
@@ -46,13 +44,15 @@ export default {
             // dfs 判断后代中是否存在focusId
             function inChild(children) {
                 if (children) {
+                    let flag = false;
                     for (let i = 0; i < children.length; ++i) {
                         if (children[i].id == id) {
                             return true;
                         } else {
-                            return inChild(children[i].children);
+                            flag = flag || inChild(children[i].children);
                         }
                     }
+                    return flag;
                 }
                 return false;
             }

@@ -22,7 +22,7 @@
     </div>
 </template>
 <script>
-import A from '@/api/auth.js';
+import { login, register } from '@/api/auth.js';
 import { mapMutations } from 'vuex';
 export default {
     data() {
@@ -44,7 +44,7 @@ export default {
             this.username = ''
         },
         handleLogin() {
-            A.login(this.username, this.password)
+            login(this.username, this.password)
             .then(msg => {
                 console.log(msg);
                 this.login({username: this.username});
@@ -55,7 +55,7 @@ export default {
         },
         register() {
             if (this.password && (this.password === this.passwordConfirm)) {
-                A.register(this.username, this.password)
+                register(this.username, this.password)
                 .then(msg => {
                     console.log(msg);
                 })

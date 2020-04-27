@@ -1,6 +1,6 @@
 <template>
    <div class="container">
-      <div class="toc" :style="tocStyle">
+      <div class="toc" :style="tocStyle" v-if="links.length">
          <div class="left-bar">
             <div class="cur-active" :style="activeStyle"></div>
          </div>
@@ -47,7 +47,8 @@ export default {
       return {
          active: 1,
          activeOffset: 0,
-         contentOffset: 0
+         contentOffset: 0,
+         hasToc: false
       }
    }, 
    methods: {
@@ -59,11 +60,18 @@ export default {
          } else {
             this.contentOffset = 0;
          }
+         // let obj = document.getElementById(id);
+         // // 为什么另一个post不行？
+         // console.log(obj);
+         // obj.scrollIntoView();
       },
       handleScroll() {
+         console.log('1');
          let anchors = document.querySelectorAll('.anchor');
+         console.log(anchors);
          anchors.forEach(anchor => {
-            if (anchor.offsetTop < document.documentElement.scrollTop) {
+            if (anchor.offsetTop - 20 < document.documentElement.scrollTop &&
+            document.documentElement.scrollTop < anchor.offsetTop) {
                this.active = Number(anchor.id);
             }
          })
@@ -124,10 +132,12 @@ export default {
       }
    },
    mounted() {
-      window.addEventListener('scroll', this.handleScroll, false);
+      window.addEventListener('scroll', this.handleScroll, true);
+      console.log('create');
    },
    destroyed() {
       window.removeEventListener('scroll', this.handleScroll);
+      console.log('destroy');
    },
 }
 </script>

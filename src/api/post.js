@@ -1,11 +1,11 @@
 import R from './request';
 
-export default {
-    getPostList(page) {
-        return R.get(`article?page=${page}`);
-    },
-    getPost(id) {
-        return R.get(`article/${id}`);
-    }
 
+function getPostList(page) {
+    return R.get(`article?page=${page}`);
 }
+
+function getPost(id) {
+    return R.get(`article/${id}`);
+}
+export  { getPostList, getPost };
