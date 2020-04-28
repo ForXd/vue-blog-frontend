@@ -5,7 +5,7 @@
         </div>
         <pagination 
         :onChange="getPage" 
-        :total="100" 
+        :total="post_count" 
         :count="page_count"/>
     </div>
 </template>

@@ -21,20 +21,7 @@
 import TreeLink from './TreeLink.vue';
 import marked from 'marked';
 const render = new marked.Renderer();
-let index = 1;
-render.heading = function(text, level) {
-   return `<h${level}><a id=${index++} class="anchor">${text}</a></h${level}>`;
-}
-marked.setOptions({
-   renderer: render,
-   gfm: true,
-   tables: true,
-   breaks: false,
-   pedantic: false,
-   sanitize: false,
-   smartLists: true,
-   smartypants: false,
-});
+// 此处定义的变量是不同组件之间共享的变量
 export default {
    props: {
       rawContent: String,
@@ -60,15 +47,11 @@ export default {
          } else {
             this.contentOffset = 0;
          }
-         // let obj = document.getElementById(id);
-         // // 为什么另一个post不行？
-         // console.log(obj);
-         // obj.scrollIntoView();
+         
       },
       handleScroll() {
-         console.log('1');
+         // console.log('post scroll');
          let anchors = document.querySelectorAll('.anchor');
-         console.log(anchors);
          anchors.forEach(anchor => {
             if (anchor.offsetTop - 20 < document.documentElement.scrollTop &&
             document.documentElement.scrollTop < anchor.offsetTop) {
@@ -132,7 +115,22 @@ export default {
       }
    },
    mounted() {
-      window.addEventListener('scroll', this.handleScroll, true);
+      window.addEventListener('scroll', this.handleScroll, false);
+      // 只有在内部定义index才是属于组件的变量，否则就是组件之间共享的
+      let index = 1;
+      render.heading = function(text, level) {
+         return `<h${level}><a id=${index++} class="anchor">${text}</a></h${level}>`;
+      }
+      marked.setOptions({
+         renderer: render,
+         gfm: true,
+         tables: true,
+         breaks: false,
+         pedantic: false,
+         sanitize: false,
+         smartLists: true,
+         smartypants: false,
+      });
       console.log('create');
    },
    destroyed() {
@@ -155,7 +153,8 @@ export default {
       align-self: flex-start;
       border: 1px solid #ccc;
       padding: 0 1em;
-      width: 10em;
+      width: 10rem;
+      flex-shrink: 0;
       overflow: hidden;
       white-space: nowrap;
       display: flex;
@@ -183,5 +182,7 @@ export default {
    .content {
       white-space: pre-line;
       text-align: left;
+      margin-right: 10rem;
+      margin-left: 2rem;
    }
 </style>

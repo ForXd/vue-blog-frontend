@@ -30,9 +30,11 @@ export default {
     },
     methods: {
         jump() {
-            // this.focusId = this.link.id;
-            // this.focusTo(this.link.id, this.$refs.cur.offsetTop);
+            this.focusTo(this.link.id, this.$refs.cur.offsetTop);
             // 在此处跳转，因为Post组件尚未完成更新，所以会出现null
+            let obj = document.getElementById(this.link.id);
+            // 为什么另一个post不行？
+            obj.scrollIntoView();
         }
     },
     computed: {

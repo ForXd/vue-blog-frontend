@@ -42,13 +42,6 @@ export default {
                 console.log(res);
                 item.children.push(res);
             })
-            // item.children.push({
-            //     id: this.index++,
-            //     content,
-            //     to_comment: item.id,
-            //     author: this.$store.user
-            // })
-            // need post to server
         },
         addComment(content) {
             let comment = {};

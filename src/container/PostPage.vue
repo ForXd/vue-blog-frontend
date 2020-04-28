@@ -2,7 +2,7 @@
     <div>
         <post :rawContent="rawContent" :tocHeight="200" :key="id"/>
         <div class="comment">
-            <comment-list :comments="comments"/>
+            <comment-list :comments="comments" :createComment="createComment"/>
         </div>
     </div>
 </template>
@@ -52,6 +52,8 @@ export default {
         });
         console.log(1);
         console.log(convertToTree(test_data));
+        
+        this.comments = convertToTree(test_data);
     }
 }
 </script>
