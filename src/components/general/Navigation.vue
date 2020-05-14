@@ -1,24 +1,37 @@
 <template>
     <div id="nav" :class="classObj">
-      <router-link to="/">Home</router-link>
-      <span class="split"></span>
-      <router-link to="/about">About</router-link>
-      <span class="split"></span>
-      <router-link to="/auth">Login</router-link>
-      <div class="dropdown" v-show="user">
-        <a href="#" class="dropbtn">{{user?user.username:null}}</a>
-        <div class="dropdown-content">
-          <!-- <a href="javascript:" @click="">write</a> -->
-          <a href="javascript:" @click="logout">logout</a>
+        <div class="route">
+            <router-link to="/">Home</router-link>
+            <span class="split"></span>
+            <router-link to="/about">About</router-link>
+            <span class="split"></span>
+            <router-link to="/auth">Login</router-link>
         </div>
-      </div>
+        <div class="search">
+            <input type="text" v-model="searchVal" @input="handleInput" list="search-list">
+            <button @click="search">tt</button>
+            <datalist id="search-list">
+                <option v-for="val in candidates" :value="val.title" :key="val.id"></option>
+            </datalist>
+        </div>
+        <div class="dropdown" v-show="user">
+            <a href="#" class="dropbtn">{{user?user.username:null}}</a>
+            <div class="dropdown-content">
+            <a href="javascript:" @click="writePost">write</a>
+            <a href="javascript:" @click="logout">logout</a>
+            </div>
+        </div>
     </div>    
 </template>
 <script>
+import F from '@/util/frequency.js';
+import { getPostListbyTitle } from '@/api/post.js';
 export default {
     data() {
         return {
             prev: 0,
+            searchVal: '',
+            candidates: [{id: 1, title: 'sdfads'},{id: 2, title: 'sdfffffads'},{id: 3, title: 'sccecs'}]
         }
     },
     computed: {
@@ -44,6 +57,18 @@ export default {
         },
         logout() {
             this.$store.commit('logout');
+        },
+        handleInput: F.debounce(function() {
+            console.log(this.searchVal);
+        }, 300),
+        search() {
+            console.log('search: ' + this.searchVal);
+            getPostListbyTitle(this.searchVal).then(res => {
+                console.log(res);
+            }).catch(err => console.log(err));
+        },
+        writePost() {
+            this.$router.push('/edit/0');
         }
     },
     mounted() {
@@ -66,7 +91,11 @@ export default {
         background: white;
         transition: all 0.6s ease;
         border-bottom: 1px solid #ccc;
+        display: flex;
+        justify-content: space-around;
         z-index: 10;
+        .route {
+        }
         a {
             display: inline-block;
             font-weight: bold;
@@ -95,15 +124,17 @@ export default {
             width: 1em;
             margin-right: 1em;
         }
+        .search {
+            
+        }
         
         .dropdown {
-            float: right;
             min-width: 5em;
             text-align: center;
         }
 
         .dropdown-content {
-            display: none;
+            opacity: 0;
             position: absolute;
             background-color: #f9f9f9;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -122,15 +153,15 @@ export default {
         }
 
         .dropdown-content a {
+            display: block;
             padding: 12px 16px;
             text-decoration: none;
-            display: block;
         }
 
         .dropdown-content a:hover {background-color: #ccc}
 
         .dropdown:hover .dropdown-content {
-            display: block;
+            opacity: 1;
         }
     }
     

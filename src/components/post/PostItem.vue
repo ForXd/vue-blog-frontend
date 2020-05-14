@@ -26,7 +26,7 @@ export default {
 <style lang="less" scoped>
 .container {
     &:hover {
-        transform: scale(1.1);
+        transform: scale(1.05);
         transition: all 0.6s ease;
         cursor: pointer;
     }

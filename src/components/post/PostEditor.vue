@@ -36,6 +36,7 @@ export default {
     },
     props: {
         submitPost: Function,
+        post: Object
     },
     data() {
         return {
@@ -53,9 +54,24 @@ export default {
             post.title = this.title;
             post.category = this.category;
             post.content = this.content;
-            this.submitPost(post);
+            this.submitPost(post).then(
+                res => {
+                    if (res.success) {
+                        this.$router.push('/post/' + res.id);
+                    } else {
+                        alert('submit fail');
+                    }
+                }
+            )
         },
     },
+    created() {
+        if (this.post != null) {
+            this.title = this.post.title;
+            this.category = this.post.category;
+            this.content = this.post.title;
+        }
+    }
 }
 </script>
 <style scoped>

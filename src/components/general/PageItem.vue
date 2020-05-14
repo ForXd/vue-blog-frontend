@@ -20,6 +20,7 @@ export default {
 }
 .active {
     border: 1px solid #ccc;
+    border-radius: 50%;
     background: gray;
     color: white;
     padding: 0 6px;

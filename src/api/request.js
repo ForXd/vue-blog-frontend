@@ -33,6 +33,17 @@ export default {
         //     }
         // })
     },
+    postData(url, data) {
+        let formData = new FormData();
+        for (let key in data) {
+            formData.append(key, data[key]);
+        }
+        return fetch(PREFIX + url, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+    },
     upload(url, files, filename) {
         let formData = new FormData();
         Array.from(files).forEach(file => {

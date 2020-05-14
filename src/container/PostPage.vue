@@ -11,15 +11,7 @@ import Post from '@/components/post/Post.vue';
 import CommentList from '@/components/comment/CommentList.vue';
 import {getPost} from '@/api/post.js';
 import R from '@/api/request.js';
-const test_data = [
-    {id:1,content:'1',author: 'zyx', to_comment: 0},
-    {id:2,content:'2',author: 'zyx', to_comment: 1},
-    {id:3,content:'3',author: 'zyx', to_comment: 2},
-    {id:4,content:'4',author: 'zyx', to_comment: 2},
-    {id:5,content:'5',author: 'zyx', to_comment: 0},
-    {id:6,content:'6',author: 'zyx', to_comment: 3},
-    {id:7,content:'7',author: 'zyx', to_comment: 6},
-]
+import { createComment, getCommentbyPost } from '@/api/comment.js';
 import { convertToTree } from '@/util/helper.js';
 export default {
     props: {
@@ -38,22 +30,25 @@ export default {
     },
     methods: {
         createComment(comment) {
+            comment.author_id = 1;
+            comment.post_id = this.id;
             console.log(comment);
+            return createComment(comment);
         }
     },
     mounted() {
         getPost(this.id).then(res => {
             this.post = res;
+            console.log(res);
             R.getFile(res.content_url)
             .then(res => res.text())
             .then(res => {
                 this.rawContent = res;
             })
         });
-        console.log(1);
-        console.log(convertToTree(test_data));
-        
-        this.comments = convertToTree(test_data);
+        getCommentbyPost(this.id).then(res => {
+            this.comments = convertToTree(res);
+        })
     }
 }
 </script>

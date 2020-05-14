@@ -1,7 +1,7 @@
 <template>
-    <div class="container">
+    <div>
         <div class="first">
-            <textarea v-model="content" cols="30" rows="10"></textarea>
+            <textarea v-model="content" rows="3"></textarea>
             <button @click="() => this.addComment(this.content)">reply</button>
         </div>
         <comment-item v-for="comment in comments" 
@@ -39,27 +39,39 @@ export default {
             comment.content = content;
             comment.to_comment = item.id;
             this.createComment(comment).then(res => {
-                console.log(res);
-                item.children.push(res);
+                comment.id = res.id;
+                item.children.push(comment);
             })
         },
         addComment(content) {
             let comment = {};
             comment.content = content;
             comment.author = this.$store.user;
-            comment.parentId = 0;
+            comment.to_comment = 0;
             this.createComment(comment).then(res => {
-                console.log(res);
-                this.comments.push(res);
+                comment.id = res.id;
+                this.comments.push(comment);
                 this.content = '';
             })
         }
     },
 }
 </script>
-<style scoped>
+<style lang="less" scoped>
 .first {
-
+    textarea {
+        width: 100%;
+        padding: 0;
+        resize: none;
+        outline: none;
+    }
+    button {
+        background: #fff;
+        outline: none;
+        align-self: flex-end;
+    }
+    display: flex;
+    flex-direction: column;
 }
 </style>
 

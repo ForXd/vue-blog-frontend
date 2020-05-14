@@ -13,7 +13,7 @@
             :focusTo="focusTo"/>
          </div>
       </div>
-      <div class="content" v-html="compiledContent">
+      <div class="content" v-html="compiledContent" v-highlight>
       </div>
    </div>
 </template>
@@ -53,8 +53,8 @@ export default {
          // console.log('post scroll');
          let anchors = document.querySelectorAll('.anchor');
          anchors.forEach(anchor => {
-            if (anchor.offsetTop - 20 < document.documentElement.scrollTop &&
-            document.documentElement.scrollTop < anchor.offsetTop) {
+            if (anchor.offsetTop - 150 < document.documentElement.scrollTop &&
+            document.documentElement.scrollTop < anchor.offsetTop - 50) {
                this.active = Number(anchor.id);
             }
          })
@@ -151,7 +151,6 @@ export default {
       top: 0;
       transition: all 0.6s ease;
       align-self: flex-start;
-      border: 1px solid #ccc;
       padding: 0 1em;
       width: 10rem;
       flex-shrink: 0;
