@@ -8,6 +8,14 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/monokai.css'; //样式文件
 import '@/assets/icon/iconfont.css';
 
+import Router from 'vue-router';
+const routerPush = Router.prototype.push 
+Router.prototype.push = function push(location) {   
+return routerPush.call(this, location).catch(error=> error)
+}
+
+
+
 Vue.directive('highlight',function (el) {
   let blocks = el.querySelectorAll('pre code');
   blocks.forEach((block)=>{

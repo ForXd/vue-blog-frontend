@@ -1,25 +1,37 @@
 <template>
     <div id="nav" :class="classObj">
         <div class="route">
-            <router-link to="/">Home</router-link>
+            <router-link to="/home">Home</router-link>
             <span class="split"></span>
-            <router-link to="/about">About</router-link>
-            <span class="split"></span>
-            <router-link to="/auth">Login</router-link>
+            <router-link to="/">Posts</router-link>
+        </div>
+        <div class="phone-show-menu">
+            <span class="menu">Menu</span>
+            <ul class="phone-hide">
+                <li><router-link to="/home">Home</router-link></li>
+                <li><router-link to="/">Posts</router-link></li>
+            </ul>
         </div>
         <div class="search">
-            <input type="text" v-model="searchVal" @input="handleInput" list="search-list">
-            <button @click="search">tt</button>
-            <datalist id="search-list">
-                <option v-for="val in candidates" :value="val.title" :key="val.id"></option>
-            </datalist>
+            <input type="text" v-model="searchVal" @input="handleInput">
+            <ul v-show="candidates.length > 0">
+                <li v-for="val in candidates" 
+                    :key="val.id"
+                    @click="() => {jumpTo(`/post/${val.id}`); candidates.splice(0, candidates.length);}">
+                    {{val.title}}
+                </li>
+            </ul>
         </div>
-        <div class="dropdown" v-show="user">
-            <a href="#" class="dropbtn">{{user?user.username:null}}</a>
+        <div class="dropdown" v-if="user">
+            <div class="dropbtn">{{user?user.username:null}}</div>
             <div class="dropdown-content">
-            <a href="javascript:" @click="writePost">write</a>
-            <a href="javascript:" @click="logout">logout</a>
+                <a href="javascript:" @click="jumpTo('/edit/0')">writing</a>
+                <a href="javascript:" @click="jumpTo('/user/0')">setting</a>
+                <a href="javascript:" @click="logout">logout</a>
             </div>
+        </div>
+        <div v-else>
+            <router-link to="/auth">Login</router-link>
         </div>
     </div>    
 </template>
@@ -31,7 +43,10 @@ export default {
         return {
             prev: 0,
             searchVal: '',
-            candidates: [{id: 1, title: 'sdfads'},{id: 2, title: 'sdfffffads'},{id: 3, title: 'sccecs'}]
+            candidates: [],
+            menuList: [
+                {}
+            ]
         }
     },
     computed: {
@@ -60,15 +75,14 @@ export default {
         },
         handleInput: F.debounce(function() {
             console.log(this.searchVal);
-        }, 300),
-        search() {
-            console.log('search: ' + this.searchVal);
+            if (this.searchVal == '') return;
             getPostListbyTitle(this.searchVal).then(res => {
-                console.log(res);
+                console.log(res.post);
+                this.candidates.splice(0, this.candidates.length, ...res.post);
             }).catch(err => console.log(err));
-        },
-        writePost() {
-            this.$router.push('/edit/0');
+        }, 300),
+        jumpTo(url) {
+            this.$router.push(url);
         }
     },
     mounted() {
@@ -84,7 +98,82 @@ export default {
     .hidden {
         transform: translateY(-100%);
     }
+    .phone-show-menu, .phone-hide {
+        display: none;
+    }
+    a {
+        text-decoration-line: none;
+        color: #2c3e50;
+    }
+    .menu {
+        padding: 2em 0;
+    }
+    .phone-hide {
+        position: absolute;
+        background-color: #f9f9f9;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        border: 1px solid #ccc;
+        min-width: 5em;
+        padding: 0 1em;
+        text-align: center;
+    }
+    ul {
+        list-style: none;
+    }
+    .search {
+        ul {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            min-width: 5em;
+            padding: 0 1em;
+            text-align: center;
+            &:hover {
+                display: block;
+            }
+            li {
+                margin: 0.5em 0;
+            }
+            li:hover {
+                background-color: #e9e9e9;
+                cursor: pointer;
+            }
+        }
+        input:focus ~ ul{
+            display: block;
+        }
+    }
+    @media screen and (max-width: 600px) {
+        .route {
+            display: none;
+        }
+        .phone-hide:hover {
+            display: block;
+        }
+        .phone-show-menu {
+            display: block;
+            &:hover .phone-hide {
+                display: block;
+                a {
+                    display: inline-block;
+                    position: relative;
+                }
+                li {
+                    margin: 0.5em 0;
+                }
+                li:hover {
+                    background-color: #e9e9e9;
+                    cursor: pointer;
+                }
+            }
+        }
+
+    }
     #nav {
+        margin: 0;
         padding: 10px 0 20px 0;
         position: sticky;
         top: 0;left: 0;
@@ -94,9 +183,8 @@ export default {
         display: flex;
         justify-content: space-around;
         z-index: 10;
-        .route {
-        }
-        a {
+        box-shadow: 0 0.01rem 0.5rem 0;
+        .route a {
             display: inline-block;
             font-weight: bold;
             color: #2c3e50;
@@ -141,6 +229,7 @@ export default {
             margin-top: 10px;
             border: 1px solid #ccc;
             min-width: 5em;
+            
             &::before {
                 content: '';
                 position: absolute;
@@ -155,7 +244,8 @@ export default {
         .dropdown-content a {
             display: block;
             padding: 12px 16px;
-            text-decoration: none;
+            text-decoration-line: none;
+            color: #2c3e50;
         }
 
         .dropdown-content a:hover {background-color: #ccc}

@@ -90,5 +90,8 @@ export default {
         height: 70vh;
         margin: 0 auto;
     }
+    .function-area {
+
+    }
 </style>
 

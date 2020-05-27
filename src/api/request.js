@@ -1,4 +1,4 @@
-const PREFIX = 'http://localhost:8000/'
+const PREFIX = 'http://120.24.4.116:8000/'
 export default {
     get(url) {
         return fetch(PREFIX + url).then(res => res.json());

@@ -17,13 +17,12 @@
                 </a>
             </div>
             <button v-if="isLogin" @click="handleLogin">Login</button>
-            <button v-else-if="!isLogin" @click="register">Register</button>
+            <button v-else-if="!isLogin" @click="reg">Register</button>
         </div>
     </div>
 </template>
 <script>
-import { login, register } from '@/api/auth.js';
-import { mapMutations } from 'vuex';
+import { mapActions } from 'vuex';
 export default {
     data() {
         return {
@@ -33,9 +32,14 @@ export default {
             isLogin: true
         }
     },
+    computed: {
+        user() {
+            return this.$store.state.user;
+        }
+    },
     methods: {
-        ...mapMutations([
-            'login'
+        ...mapActions([
+            'login','register'
         ]),
         changeTab() {
             this.isLogin = !this.isLogin;
@@ -44,27 +48,21 @@ export default {
             this.username = ''
         },
         handleLogin() {
-            login(this.username, this.password)
-            .then(msg => {
-                console.log(msg);
-                this.login({username: this.username});
-            })
-            .catch(err => {
-                console.log(err);
-            })
+            this.login({username:this.username, password:this.password})
+            .then(() => this.jump());
         },
-        register() {
+        reg() {
             if (this.password && (this.password === this.passwordConfirm)) {
-                register(this.username, this.password)
-                .then(msg => {
-                    console.log(msg);
-                })
-                .catch(err => {
-                    console.log(err);
-                })
+                this.register({username:this.username, password:this.password})
+                .then(() => this.jump());
             } else {
                 alert('password not equal');
                 this.passwordConfirm='';
+            }
+        },
+        jump() {
+            if (this.user != null) {
+                this.$router.push('/');
             }
         }
     },

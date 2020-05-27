@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="first">
-            <textarea v-model="content" rows="3"></textarea>
+            <textarea v-model="content" rows="1" @input="handleChange"></textarea>
             <button @click="() => this.addComment(this.content)">reply</button>
         </div>
         <comment-item v-for="comment in comments" 
@@ -53,22 +53,27 @@ export default {
                 this.comments.push(comment);
                 this.content = '';
             })
-        }
+        },
+        handleChange(e) {
+            let elem = e.target;
+            elem.style.height = 'auto';
+            elem.scrollTop = 0;
+            elem.style.height = elem.scrollHeight + 'px';
+        },
     },
 }
 </script>
 <style lang="less" scoped>
 .first {
     textarea {
-        width: 100%;
-        padding: 0;
+        padding: 1em;
         resize: none;
         outline: none;
     }
     button {
         background: #fff;
         outline: none;
-        align-self: flex-end;
+        align-self:flex-end;
     }
     display: flex;
     flex-direction: column;

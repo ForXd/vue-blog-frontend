@@ -21,6 +21,11 @@ export default {
         Post,
         CommentList
     },
+    watch: {
+        id: function(id) {
+            this.init(id);
+        }
+    },
     data() {
         return {
             comments: [],
@@ -34,27 +39,31 @@ export default {
             comment.post_id = this.id;
             console.log(comment);
             return createComment(comment);
-        }
-    },
-    mounted() {
-        getPost(this.id).then(res => {
+        },
+        init(id) {
+            getPost(id).then(res => {
             this.post = res;
             console.log(res);
             R.getFile(res.content_url)
-            .then(res => res.text())
-            .then(res => {
-                this.rawContent = res;
+                .then(res => res.text())
+                .then(res => {
+                    this.rawContent = res;
+                })
+            });
+            getCommentbyPost(id).then(res => {
+                this.comments = convertToTree(res);
             })
-        });
-        getCommentbyPost(this.id).then(res => {
-            this.comments = convertToTree(res);
-        })
+        }
+    },
+    mounted() {
+        this.init(this.id);
     }
 }
 </script>
 <style scoped>
     .comment {
-      
+      width: 70%;
+      margin: 0 auto;
     }
 </style>
 

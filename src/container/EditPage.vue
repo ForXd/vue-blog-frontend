@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <h1>Writing page</h1>
     <!-- <back-ground></back-ground> -->
     <post-editor :submitPost="submit" :post="post"/>
   </div>

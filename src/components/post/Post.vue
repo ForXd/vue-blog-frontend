@@ -144,6 +144,7 @@ export default {
    .container {
       display: flex;
       position: relative;
+      justify-content: center;
    }
    .toc {
       text-align: left;
@@ -183,5 +184,6 @@ export default {
       text-align: left;
       margin-right: 10rem;
       margin-left: 2rem;
+      max-width: 800px;
    }
 </style>

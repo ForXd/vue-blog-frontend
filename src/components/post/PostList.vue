@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div>
         <post-item v-for="item in items" 
                    :post="item" 
                    :key="item.id"/>
@@ -18,7 +18,5 @@ export default {
     },
 }
 </script>
-<style scoped>
 
-</style>
 

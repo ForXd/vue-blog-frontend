@@ -2,21 +2,27 @@
     <div class="container">
         <div class="post-list">
             <post-list :items="posts"/>
+            <pagination 
+            :onChange="getPage" 
+            :total="post_count" 
+            :count="page_count"/>
         </div>
-        <pagination 
-        :onChange="getPage" 
-        :total="post_count" 
-        :count="page_count"/>
+
+        <div class="user-info" v-show="user != null">
+            <user-profile :user="user"/>
+        </div>
     </div>
 </template>
 <script>
 import { getPostList } from '@/api/post.js';
 import Pagination from '@/components/general/Pagination.vue';
 import PostList from '@/components/post/PostList.vue';
+import UserProfile from '@/components/user/UserProfile.vue';
 export default {
     components: {
         PostList,
-        Pagination
+        Pagination,
+        UserProfile
     },
     data() {
         return {
@@ -27,11 +33,16 @@ export default {
             categories: [],
         }
     },
+    computed: {
+        user() {
+            return this.$store.state.user;
+        }
+    },
     methods: {
         getPage(page_num) {
             getPostList(page_num)
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 let post = res.post;
                 this.post_count = res.postCount;
                 this.posts.splice(0, this.page_count, ...post);
@@ -45,7 +56,18 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-
+.container {
+    display: flex;
+    justify-content: center;
+}
+.post-list {
+}
+.user-info {
+    border: 1px solid #ccc;
+    width: 200px;
+    align-self: baseline;
+    margin-top: 20px;
+}
 </style>
 
 

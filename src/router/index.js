@@ -23,6 +23,10 @@ const routes = [
     path: '/post/:id',
     component: () => import('../container/PostPage'),
     props: true
+  },
+  {
+    path: '/home',
+    component: () => import('../container/CategoryPage')
   }
 ]
 

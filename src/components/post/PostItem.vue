@@ -7,7 +7,7 @@
             {{post.description}}
         </div>
         <div class="time">
-            {{post.create_time}}
+            {{post.create_time | formatDate}}
         </div>
     </div>
 </template>
@@ -21,6 +21,22 @@ export default {
             this.$router.push('/post/' + this.post.id);
         }
     },
+    filters: {
+        formatDate:function (val) {
+            const padDate = function(val) {
+                val = val < 10 ? '0' + val : val;
+                return val;
+            }
+            let value=new Date(val);
+            let year=value.getFullYear();
+            let month=padDate(value.getMonth()+1);
+            let day=padDate(value.getDate());
+            let hour=padDate(value.getHours());
+            let minutes=padDate(value.getMinutes());
+            let seconds=padDate(value.getSeconds());
+            return year+'-'+month+'-'+day+' '+hour+':'+minutes+':'+seconds;
+        }
+    }
 }
 </script>
 <style lang="less" scoped>

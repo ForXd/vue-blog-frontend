@@ -33,8 +33,13 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  min-width: 600px;
+  font-size: 15px;
 }
 #main {
   min-height: calc(100vh - 150px);
+}
+body {
+  margin: 0;
 }
 </style>
