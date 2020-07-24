@@ -1,52 +1,57 @@
 <template>
     <div id="nav" :class="classObj">
         <div class="route">
-            <router-link to="/home">Home</router-link>
+            <router-link to="/">Home</router-link>
             <span class="split"></span>
-            <router-link to="/">Posts</router-link>
+            <router-link to="/article">Posts</router-link>
         </div>
         <div class="phone-show-menu">
-            <span class="menu">Menu</span>
-            <ul class="phone-hide">
-                <li><router-link to="/home">Home</router-link></li>
-                <li><router-link to="/">Posts</router-link></li>
-            </ul>
+            <drop-down-menu :menu="routeMenu" :handler="handleRouteMenu" :prop="'name'">
+                <template #title>
+                    <i class="iconfont menu">&#xe64c;</i>
+                </template>
+            </drop-down-menu>
         </div>
-        <div class="search">
-            <input type="text" v-model="searchVal" @input="handleInput">
-            <ul v-show="candidates.length > 0">
-                <li v-for="val in candidates" 
-                    :key="val.id"
-                    @click="() => {jumpTo(`/post/${val.id}`); candidates.splice(0, candidates.length);}">
-                    {{val.title}}
-                </li>
-            </ul>
+        <div>
+            <drop-down-menu :menu="candidates" :handler="handleAriticleMenu" :prop="'title'">
+                <template #title>
+                    <div>
+                        <input type="text" v-model="searchVal" @input="handleInput" class="search">
+                        <i class="iconfont">&#xe607;</i>
+                    </div>
+                </template>
+            </drop-down-menu>
         </div>
-        <div class="dropdown" v-if="user">
-            <div class="dropbtn">{{user?user.username:null}}</div>
-            <div class="dropdown-content">
-                <a href="javascript:" @click="jumpTo('/edit/0')">writing</a>
-                <a href="javascript:" @click="jumpTo('/user/0')">setting</a>
-                <a href="javascript:" @click="logout">logout</a>
+        
+        <div>
+            <drop-down-menu :menu="userMenu" :handler="handleUserMenu" :prop="'name'"  v-if="user">
+                <template #title>
+                    <div>
+                        <i class="iconfont">&#xe631;</i>
+                    </div>
+                </template>
+            </drop-down-menu>
+            <div v-else>
+                <router-link to="/auth">Login</router-link>
             </div>
-        </div>
-        <div v-else>
-            <router-link to="/auth">Login</router-link>
         </div>
     </div>    
 </template>
 <script>
 import F from '@/util/frequency.js';
 import { getPostListbyTitle } from '@/api/post.js';
+import DropDownMenu from './DropDownMenu.vue';
 export default {
+    components: {
+        DropDownMenu
+    },
     data() {
         return {
             prev: 0,
             searchVal: '',
             candidates: [],
-            menuList: [
-                {}
-            ]
+            userMenu: [{name:'writting'},{name:'setting'},{name:'logout'}],
+            routeMenu:  [{name:'Home'},{name:'Post'}],
         }
     },
     computed: {
@@ -61,6 +66,34 @@ export default {
         },
     },
     methods: {
+        handleUserMenu(val) {
+            switch(val) {
+                case 0:
+                    this.jumpTo('/edit/0/');
+                    break;
+                case 1:
+                    this.jumpTo('/user/0/');
+                    break;
+                case 2:
+                    this.logout();
+                    break;
+            }
+        },
+        handleAriticleMenu(index) {
+            this.searchVal = '';
+            this.jumpTo(`/post/${this.candidates[index].id}`); 
+            this.candidates.splice(0, this.candidates.length);
+        },
+        handleRouteMenu(index) {
+            switch(index) {
+                case 0:
+                    this.jumpTo('/')
+                    break;
+                case 1:
+                    this.jumpTo('/article')
+                    break;
+            }
+        },
         fn() {
             let cur = document.documentElement.scrollTop;
             if (cur - this.prev > 40) {
@@ -74,12 +107,12 @@ export default {
             this.$store.commit('logout');
         },
         handleInput: F.debounce(function() {
-            console.log(this.searchVal);
+            // console.log(this.searchVal);
             if (this.searchVal == '') return;
             getPostListbyTitle(this.searchVal).then(res => {
-                console.log(res.post);
+                // console.log(res.post);
                 this.candidates.splice(0, this.candidates.length, ...res.post);
-            }).catch(err => console.log(err));
+            }).catch(err => alert(err));
         }, 300),
         jumpTo(url) {
             this.$router.push(url);
@@ -108,6 +141,11 @@ export default {
     .menu {
         padding: 2em 0;
     }
+    .search {
+        border: none;
+        outline: none;
+        border-bottom: 1px solid;
+    }
     .phone-hide {
         position: absolute;
         background-color: #f9f9f9;
@@ -116,36 +154,9 @@ export default {
         min-width: 5em;
         padding: 0 1em;
         text-align: center;
-    }
-    ul {
         list-style: none;
     }
-    .search {
-        ul {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            min-width: 5em;
-            padding: 0 1em;
-            text-align: center;
-            &:hover {
-                display: block;
-            }
-            li {
-                margin: 0.5em 0;
-            }
-            li:hover {
-                background-color: #e9e9e9;
-                cursor: pointer;
-            }
-        }
-        input:focus ~ ul{
-            display: block;
-        }
-    }
+    
     @media screen and (max-width: 600px) {
         .route {
             display: none;
@@ -155,22 +166,7 @@ export default {
         }
         .phone-show-menu {
             display: block;
-            &:hover .phone-hide {
-                display: block;
-                a {
-                    display: inline-block;
-                    position: relative;
-                }
-                li {
-                    margin: 0.5em 0;
-                }
-                li:hover {
-                    background-color: #e9e9e9;
-                    cursor: pointer;
-                }
-            }
         }
-
     }
     #nav {
         margin: 0;
@@ -182,6 +178,7 @@ export default {
         border-bottom: 1px solid #ccc;
         display: flex;
         justify-content: space-around;
+        align-items: center;
         z-index: 10;
         box-shadow: 0 0.01rem 0.5rem 0;
         .route a {
@@ -199,59 +196,16 @@ export default {
                     left: 50%;
                     margin-left: -5px;
                     border: 5px solid;
-                    border-color: transparent transparent #42b983 transparent;
+                    border-color: transparent transparent #000 transparent;
                 }
-                color: #42b983;
+                color: #000;
                 transform: translateY(5px);
             }
         }
         .split {
-            border-right: 1px solid;
-            height: 1em;
-            display: inline-block;
-            width: 1em;
-            margin-right: 1em;
-        }
-        .search {
-            
-        }
-        
-        .dropdown {
-            min-width: 5em;
-            text-align: center;
-        }
-
-        .dropdown-content {
-            opacity: 0;
-            position: absolute;
-            background-color: #f9f9f9;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            min-width: 5em;
-            
-            &::before {
-                content: '';
-                position: absolute;
-                top: -20px;
-                left: 50%;
-                margin-left: -10px;
-                border: 10px solid;
-                border-color: transparent transparent black transparent;
-            }
-        }
-
-        .dropdown-content a {
-            display: block;
-            padding: 12px 16px;
-            text-decoration-line: none;
-            color: #2c3e50;
-        }
-
-        .dropdown-content a:hover {background-color: #ccc}
-
-        .dropdown:hover .dropdown-content {
-            opacity: 1;
+            height: 1rem;
+            border-left: 1px solid;
+            margin: 0 1rem;
         }
     }
     

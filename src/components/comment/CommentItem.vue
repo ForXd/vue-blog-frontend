@@ -2,6 +2,7 @@
     <div>
         <div class="container">
             <div class="author-img">
+                {{comment.author?comment.author.avatar_url:''}}
             </div>
             <div class="inner-content">
                 <div class="author">{{comment.author}}</div>

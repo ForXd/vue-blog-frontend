@@ -1,73 +1,43 @@
 <template>
     <div class="container">
-        <div class="post-list">
-            <post-list :items="posts"/>
-            <pagination 
-            :onChange="getPage" 
-            :total="post_count" 
-            :count="page_count"/>
-        </div>
-
-        <div class="user-info" v-show="user != null">
-            <user-profile :user="user"/>
-        </div>
+        <section>
+            <h2>Category</h2>
+            <category-list  :category="category"/>
+        </section>
+        <section>
+            <h2>Author</h2>
+        </section>
     </div>
 </template>
 <script>
-import { getPostList } from '@/api/post.js';
-import Pagination from '@/components/general/Pagination.vue';
-import PostList from '@/components/post/PostList.vue';
-import UserProfile from '@/components/user/UserProfile.vue';
+import CategoryList from '@/components/category/CategoryList.vue';
+import { getCategory } from '@/api/post.js';
 export default {
     components: {
-        PostList,
-        Pagination,
-        UserProfile
+        CategoryList,
     },
     data() {
         return {
-            posts: [],
-            post_page_num:1,
-            post_count: 0,
-            page_count: 10,
-            categories: [],
+            category: [],
+            authors: []
         }
-    },
-    computed: {
-        user() {
-            return this.$store.state.user;
-        }
-    },
-    methods: {
-        getPage(page_num) {
-            getPostList(page_num)
-            .then(res => {
-                // console.log(res);
-                let post = res.post;
-                this.post_count = res.postCount;
-                this.posts.splice(0, this.page_count, ...post);
-                this.post_page_num = page_num;
-            });
-        },
     },
     created() {
-        this.getPage(this.post_page_num);
-    },
+        getCategory()
+        .then(res => {
+            this.category.splice(0, ...res.category);
+        })
+    }
 }
 </script>
-<style lang="less" scoped>
+<style scoped lang="less">
 .container {
-    display: flex;
-    justify-content: center;
-}
-.post-list {
-}
-.user-info {
-    border: 1px solid #ccc;
-    width: 200px;
-    align-self: baseline;
-    margin-top: 20px;
+    section {
+        max-width: 50rem;
+        margin: 1rem auto;
+        h2 {
+            text-align: left;
+        }
+    }
 }
 </style>
-
-

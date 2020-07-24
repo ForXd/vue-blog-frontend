@@ -1,6 +1,7 @@
-const PREFIX = 'http://120.24.4.116:8000/'
+const PREFIX = '/api'
 export default {
     get(url) {
+        console.log(url);
         return fetch(PREFIX + url).then(res => res.json());
     },
     getFile(url) {

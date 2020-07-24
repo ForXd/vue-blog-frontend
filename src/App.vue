@@ -21,7 +21,6 @@ export default {
     if (user) {
       this.$store.commit('login', JSON.parse(user));
     }
-    console.log(this.$store.state.user);
   },
 }
 </script>
@@ -35,6 +34,7 @@ export default {
   text-align: center;
   min-width: 600px;
   font-size: 15px;
+  background-image: url(./assets/white-waves.png);
 }
 #main {
   min-height: calc(100vh - 150px);

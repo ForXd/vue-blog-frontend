@@ -34,9 +34,10 @@ export default {
             this.addItem(item, content);
         },
         addItem(item, content) {
-            console.log(item, content);
+            // console.log(item, content);
             let comment = {};
             comment.content = content;
+            comment.author = this.$store.state.user.id;
             comment.to_comment = item.id;
             this.createComment(comment).then(res => {
                 comment.id = res.id;
@@ -46,8 +47,9 @@ export default {
         addComment(content) {
             let comment = {};
             comment.content = content;
-            comment.author = this.$store.user;
+            comment.author = this.$store.state.user.id;
             comment.to_comment = 0;
+            console.log(comment);
             this.createComment(comment).then(res => {
                 comment.id = res.id;
                 this.comments.push(comment);

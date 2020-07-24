@@ -33,7 +33,7 @@ export default new Vuex.Store({
     login({commit}, {username, password}) {
       return login(username, password)
       .then(msg => {
-        console.log(msg);
+        // console.log(msg);
         if (msg.success) {
           commit('login', msg.user);
         } else {

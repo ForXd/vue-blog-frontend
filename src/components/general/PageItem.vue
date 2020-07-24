@@ -15,15 +15,15 @@ export default {
 <style scoped>
 .other {
     background: white;
-    padding: 0 6px;
+    padding: 0.5rem;
     cursor: pointer;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
 }
 .active {
-    border: 1px solid #ccc;
-    border-radius: 50%;
     background: gray;
     color: white;
-    padding: 0 6px;
+    padding:  0.5rem;
 }
 </style>
 

@@ -36,8 +36,23 @@ Vue.directive('dom', {
   unbind: function () {}
 })
 
+
+
 new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount('#app')
+
+router.beforeEach((to, from, next)=>{
+  if (to.meta.login) {
+      // console.log('protect')
+      if (!store.state.user) {
+          next({name: 'auth'})
+      } else {
+          next()
+      }
+  } else {
+    next();
+  }
+})

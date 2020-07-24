@@ -6,8 +6,14 @@
         <div class="description">
             {{post.description}}
         </div>
-        <div class="time">
-            {{post.create_time | formatDate}}
+        <div class="info">
+            <div>
+                <i class="iconfont">&#xe74d;</i>
+                <span>{{post.praise_num}}</span>
+            </div>
+            <div>
+                {{post.create_time | formatDate}}
+            </div>
         </div>
     </div>
 </template>
@@ -49,6 +55,9 @@ export default {
     width: 80%;
     border: 1px solid #ccc;
     margin: 1em auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 1rem;
+    background: white;
 }
 .title {
     font-size: 24px;
@@ -59,8 +68,9 @@ export default {
     text-align: left;
     padding: 1em;
 }
-.time {
-    text-align: left;
+.info {
+    display: flex;
+    justify-content: space-between;
     padding: 1em;
 }
 </style>

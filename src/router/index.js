@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../container/Home.vue'
 
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -12,6 +13,7 @@ const routes = [
   },
   {
     path: '/auth',
+    name: 'auth',
     component: () => import('../container/Auth')
   },
   {
@@ -25,8 +27,31 @@ const routes = [
     props: true
   },
   {
-    path: '/home',
-    component: () => import('../container/CategoryPage')
+    path: '/article',
+    component: () => import('../container/Article')
+  },
+  {
+    path: '/user/:id',
+    component: () => import('../container/UserPage'),
+    props: true,
+    meta: {
+      login: true
+    },
+    children: [
+      {
+        path: 'info',
+        component: () => import('@/components/user/UserInfo'),
+        props:true
+      },
+      {
+        path: 'collect',
+        component: () => import('@/components/user/UserCollect')
+      },
+      {
+        path: 'activity',
+        component: () => import('@/components/user/UserActivity')
+      }
+    ]
   }
 ]
 

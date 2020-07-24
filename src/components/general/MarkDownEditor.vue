@@ -1,8 +1,8 @@
 <template>
     <div class="container" :style="{width: width, height: height}">
         <div class="toolbars">
-            <i @click="splitMode" class="icon-split" title="split mode"></i>
-            <i @click="tongleMode" class="icon-tongle" title="change mode"></i>
+            <i @click="splitMode" class="iconfont" title="split mode">&#xe624;</i>
+            <i @click="tongleMode" class="iconfont" title="change mode">&#xe736;</i>
         </div>
         <textarea 
             class="raw" @input="update" :value="rawContent"

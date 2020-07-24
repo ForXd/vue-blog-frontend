@@ -74,14 +74,18 @@ export default {
 </script>
 <style scoped>
 #container {
-    display: flex;
+    display: inline-flex;
     justify-content: center;
+    border-radius: 0.5rem;
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px 0;
 }
 section {
     display: flex;
 }
-.goto {
-    padding: 0 10px;
+.goto, .go {
+    padding: 0.5rem;
 }
 .goto:hover {
     color: blue;
@@ -91,6 +95,8 @@ section {
     width: 2em;
     text-align: center;
     padding: 0 6px;
+    outline: none;
+    border:none;
 }
 </style>
 

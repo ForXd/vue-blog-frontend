@@ -70,7 +70,7 @@ export default {
       tocStyle() {
          let style = {};
          if (this.navShow) {
-            style.top = '60px';
+            style.top = '70px';
          }
          style.height = this.tocHeight + 'px';
          return style;
@@ -131,11 +131,11 @@ export default {
          smartLists: true,
          smartypants: false,
       });
-      console.log('create');
+      // console.log('create');
    },
    destroyed() {
       window.removeEventListener('scroll', this.handleScroll);
-      console.log('destroy');
+      // console.log('destroy');
    },
 }
 </script>
