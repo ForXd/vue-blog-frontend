@@ -1,10 +1,20 @@
 <template>
     <slide-menu :menu="menu">
+        <!-- 用户名，邮箱，用户简介， -->
         <template #0>
-            <div class="info_container">
-                <h1>{{user.username}}</h1>
+            <div class="info-container">
                 <edit-info 
-                    :name="'email'" 
+                    :name="'用户名'" 
+                    :value="user.username" 
+                    :updateValue="updateEmail">
+                </edit-info>
+                <edit-info 
+                    :name="'邮箱'" 
+                    :value="email" 
+                    :updateValue="updateEmail">
+                </edit-info>
+                <edit-info 
+                    :name="'个人简介'" 
                     :value="email" 
                     :updateValue="updateEmail">
                 </edit-info>
@@ -65,5 +75,8 @@ export default {
 .password input {
     display: block;
     margin: 1rem;
+}
+.info-container {
+    padding: 1rem;
 }
 </style>

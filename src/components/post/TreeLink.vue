@@ -1,5 +1,5 @@
 <template>
-    <div id="container">
+    <div>
         <div :class="focusId == link.id ? 'cur-link' : 'other-link'"
             @click="jump" ref="cur">
             {{link.title}}
@@ -78,8 +78,6 @@ export default {
 .children {
     padding-left: 1em;
 }
-#container {
-    display: block;
-}
+
 </style>
 

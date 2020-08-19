@@ -23,7 +23,6 @@
         </div>
         <dialog-window ref="dialog">
             <template #content>
-
                 <input type="file" id="" ref="file">
                 <button @click="upload">submit</button>
             </template>
@@ -77,16 +76,18 @@ export default {
 <style scoped>
 .container {
     display: flex;
-    height: 80vh;
+    height: 75vh;
     overflow: hidden;
     align-items: stretch;
     margin: 2rem 5rem;
     background: white;
     position: relative;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    border-radius: 15px;
 }
-.active {
-    color: #ccc;
-    border-bottom: 1px solid;
+.link .active {
+    transform: translateY(0);
+    box-shadow: 0 5px 5px rgba(0,0,0,0.3);
 }
 .avatar {
     margin: 1rem 0;
@@ -105,15 +106,29 @@ export default {
     font-style: normal;
 }
 aside {
-    border: 1px solid;
     flex-basis: 300px;
+    border-right: 1px solid #ccc;
 }
 .link {
     display: flex;
     justify-content: space-around;
+    align-items: center;
     padding: 1rem;
     cursor: pointer;
     font-size: 1.5rem;
+    
+}
+.link a {
+    border-radius: 10px;
+    padding: 5px;
+    transform: translateY(-5px);
+    box-shadow: 0 15px 5px rgba(0,0,0,0.3);
+    
+    transition: all 0.6s ease-in-out;
+}
+.link a:hover {
+    transform: translateY(0);
+    box-shadow: 0 5px 5px rgba(0,0,0,0.3);
 }
 .content {
     flex-grow: 1;

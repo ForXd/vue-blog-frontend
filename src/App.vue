@@ -34,7 +34,7 @@ export default {
   text-align: center;
   min-width: 600px;
   font-size: 15px;
-  background-image: url(./assets/white-waves.png);
+  background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
 }
 #main {
   min-height: calc(100vh - 150px);

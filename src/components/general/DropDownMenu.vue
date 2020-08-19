@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <div>
+        <div class="flag">
             <slot name="title">
             </slot>
         </div>
@@ -26,7 +26,7 @@ export default {
     & > div {
         cursor: pointer;
     }
-    &:hover > ul {
+    .flag:hover ~ ul {
         transform: scale(1);
     }
     ul {

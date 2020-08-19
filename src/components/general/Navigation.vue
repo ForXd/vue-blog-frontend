@@ -180,7 +180,7 @@ export default {
         justify-content: space-around;
         align-items: center;
         z-index: 10;
-        box-shadow: 0 0.01rem 0.5rem 0;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         .route a {
             display: inline-block;
             font-weight: bold;
